@@ -1,0 +1,10 @@
+{
+  "namespace" : "com.codependent.outboxpattern.user.entity",
+  "type" : "record",
+  "name" : "UserUpdated",
+  "fields" : [
+    {"name":"id","type":"int"},
+    {"name":"name","type":"string"},
+    {"name":"address","type":"string"}
+  ]
+}
