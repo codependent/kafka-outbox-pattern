@@ -4,6 +4,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.jpa") version "1.2.71"
     id("org.springframework.boot") version "2.1.5.RELEASE"
     id("io.spring.dependency-management") version "1.0.7.RELEASE"
+    id("com.commercehub.gradle.plugin.avro") version "0.17.0"
     kotlin("jvm") version "1.2.71"
     kotlin("plugin.spring") version "1.2.71"
 }
@@ -27,7 +28,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
-    implementation("org.apache.avro:avro:1.8.2")
+    implementation("org.apache.avro:avro:1.9.0")
     runtime("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.cloud:spring-cloud-stream-test-support")
