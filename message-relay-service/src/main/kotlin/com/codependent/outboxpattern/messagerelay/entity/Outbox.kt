@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.outbox.entity
+package com.codependent.outboxpattern.messagerelay.entity
 
 import javax.persistence.*
 

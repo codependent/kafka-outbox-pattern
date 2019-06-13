@@ -1,14 +1,9 @@
 package com.codependent.outboxpattern.outbox.service
 
-import com.codependent.outboxpattern.outbox.entity.Outbox
+import org.apache.avro.specific.SpecificRecordBase
 
 interface OutboxService {
 
-    fun getAll(): List<Outbox>
+    fun save(messageId: String, topic: String, entity: SpecificRecordBase)
 
-    fun getPending(): List<Outbox>
-
-    fun save(messageId: String, topic: String, entity: Any)
-
-    fun markAsProcessed(outboxId: Int)
 }

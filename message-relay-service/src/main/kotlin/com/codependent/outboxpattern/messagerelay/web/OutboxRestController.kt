@@ -1,7 +1,7 @@
-package com.codependent.outboxpattern.outbox.web
+package com.codependent.outboxpattern.messagerelay.web
 
-import com.codependent.outboxpattern.outbox.entity.Outbox
-import com.codependent.outboxpattern.outbox.service.OutboxService
+import com.codependent.outboxpattern.messagerelay.entity.Outbox
+import com.codependent.outboxpattern.messagerelay.service.OutboxService
 import org.springframework.web.bind.annotation.*
 
 @RestController

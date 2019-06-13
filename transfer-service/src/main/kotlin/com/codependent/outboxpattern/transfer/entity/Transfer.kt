@@ -1,11 +1,9 @@
 package com.codependent.outboxpattern.transfer.entity
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
-import javax.persistence.Id
+import javax.persistence.*
 
 @Entity
+@Table(uniqueConstraints = [UniqueConstraint(columnNames = ["transferId"])])
 data class Transfer(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) val id: Int,
                     val transferId: String,
                     val sourceAccountId: Long,

@@ -1,6 +1,6 @@
 spring:
   application:
-    name: account-service
+    name: message-relay-service
   cloud:
     stream:
       kafka:
@@ -20,10 +20,16 @@ spring:
         avro:
           subjectNamingStrategy: org.springframework.cloud.stream.schema.avro.QualifiedSubjectNamingStrategy
   datasource:
-    url: jdbc:h2:mem:mydb
+    url: jdbc:h2:tcp://localhost:9090/mem:mydb
     driver-class-name: org.h2.Driver
     username: sa
     password:
   jpa:
     hibernate:
       ddl-auto: create
+    database-platform: org.hibernate.dialect.H2Dialect
+#  kafka:
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+server:
+  port: 8085

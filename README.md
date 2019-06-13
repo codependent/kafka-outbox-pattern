@@ -29,13 +29,13 @@ Create an account:
 
 Create some transfers against the generated account:
 
-` curl -X PUT http://localhost:8080/accounts/transfers -H "content-type: application/json" -d '{"sourceAccountId": 1, "destinationAccountId": 9999, "ammount": 100.00}'`
+`curl -X PUT http://localhost:8080/accounts/transfers -H "content-type: application/json" -d '{"sourceAccountId": 1, "destinationAccountId": 9999, "ammount": 100.00}'`
 
 Observe the state of:
  
  - The account database table (account-service): `http://localhost:8080/accounts`
  
- - The outbox database table (account-service: `http://localhost:8080/outbox`
+ - The outbox database table (message-relay-service): `http://localhost:8085/outbox`
  
  - The transfer databse table (transfer-service): `http://localhost:8084/transfers`
 
