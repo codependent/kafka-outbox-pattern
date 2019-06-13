@@ -28,9 +28,8 @@ class OutboxServiceImpl(private val outboxRepository: OutboxRepository,
     }
 
     override fun save(messageId: String, topic: String, entity: Any) {
-        val toMessage = avroMessageConverter.toMessage(entity, MessageHeaders(mutableMapOf(MessageHeaders.CONTENT_TYPE to "application/*+avro" as Any)))
-        val message =  toMessage as Message<*>
-        outboxRepository.save(Outbox(0, messageId, topic, State.PENDING, String(message.payload as ByteArray)))
+        val message = avroMessageConverter.toMessage(entity, MessageHeaders(mutableMapOf(MessageHeaders.CONTENT_TYPE to "application/*+avro" as Any))) as Message<*>
+        outboxRepository.save(Outbox(0, messageId, topic, State.PENDING, message.payload as ByteArray))
     }
 
     override fun getAll(): List<Outbox> {

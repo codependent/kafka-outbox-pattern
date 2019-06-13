@@ -15,8 +15,7 @@ class MessageRelay(private val outboxService: OutboxService,
     fun checkOutbox() {
         val pending = outboxService.getPending()
         pending.forEach {
-            val payloadByteArray = it.payload.toByteArray()
-            val message = MessageBuilder.withPayload(payloadByteArray).setHeader(KafkaHeaders.MESSAGE_KEY, it.messageKey).build()
+            val message = MessageBuilder.withPayload(it.payload).setHeader(KafkaHeaders.MESSAGE_KEY, it.messageKey).build()
             customerKafkaProducer.output().send(message)
             outboxService.markAsProcessed(it.id)
         }
