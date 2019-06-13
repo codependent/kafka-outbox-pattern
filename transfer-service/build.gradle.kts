@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.plugin.jpa") version "1.2.71"
-    id("org.springframework.boot") version "2.1.5.RELEASE"
+    id("org.jetbrains.kotlin.plugin.jpa") version "1.3.31"
+    id("org.springframework.boot") version "2.2.0.M3"
     id("io.spring.dependency-management") version "1.0.7.RELEASE"
     id("com.commercehub.gradle.plugin.avro") version "0.17.0"
-    kotlin("jvm") version "1.2.71"
-    kotlin("plugin.spring") version "1.2.71"
+    kotlin("jvm") version "1.3.31"
+    kotlin("plugin.spring") version "1.3.31"
 }
 
 group = "com.codependent.outboxpattern.transfer"
@@ -15,9 +15,13 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
+    maven("http://repo.spring.io/libs-release")
+    maven("http://repo.spring.io/libs-milestone")
+    maven("http://repo.spring.io/libs-snapshot")
 }
 
 extra["springCloudVersion"] = "Greenwich.SR1"
+extra["springCloudStreamVersion"] = "Horsham.BUILD-SNAPSHOT"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
@@ -36,7 +40,8 @@ dependencies {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+        mavenBom("org.springframework.cloud:spring-cloud-stream-dependencies:${property("springCloudStreamVersion")}")
+        //mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
     }
 }
 

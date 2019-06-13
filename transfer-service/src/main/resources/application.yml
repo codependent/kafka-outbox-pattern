@@ -18,6 +18,7 @@ spring:
         endpoint: http://localhost:8081
       schema:
         avro:
-          dynamic-schema-generation-enabled: true
+          subjectNamingStrategy: org.springframework.cloud.stream.schema.avro.QualifiedSubjectNamingStrategy
+
 server:
   port: 8084
