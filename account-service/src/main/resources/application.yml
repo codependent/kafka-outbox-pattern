@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: account-service
+  cloud:
+    stream:
+      kafka:
+        bindings:
+          output:
+            producer:
+              configuration:
+                key:
+                  serializer: org.apache.kafka.common.serialization.StringSerializer
+      bindings:
+        output:
+          destination: transfer
+          contentType: application/*+avro
+      schema-registry-client:
+        endpoint: http://localhost:8081
+      schema:
+        avro:
+          dynamic-schema-generation-enabled: true
