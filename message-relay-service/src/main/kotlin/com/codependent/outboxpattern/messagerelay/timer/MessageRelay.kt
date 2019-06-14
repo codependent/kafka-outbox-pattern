@@ -20,7 +20,7 @@ class MessageRelay(private val outboxService: OutboxService,
         pending.forEach {
             val message = MessageBuilder.withPayload(it.payload)
                     .setHeader(KafkaHeaders.MESSAGE_KEY, it.messageKey)
-                    //.setHeader(MessageHeaders.CONTENT_TYPE, "application/*+avro")
+                    .setHeader(MessageHeaders.CONTENT_TYPE, it.contentType)
                     .build()
             //resolver.resolveDestination(it.topic).send(message)
             source.output().send(message)

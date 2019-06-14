@@ -17,7 +17,7 @@ class OutboxServiceImpl(private val outboxRepository: OutboxRepository,
 
     override fun save(messageId: String, topic: String, entity: SpecificRecordBase) {
         val message = avroMessageConverter.toMessage(entity, MessageHeaders(mutableMapOf(MessageHeaders.CONTENT_TYPE to "application/*+avro" as Any))) as Message<*>
-        outboxRepository.save(Outbox(0, messageId, topic, entity.schema.name, State.PENDING, message.payload as ByteArray))
+        outboxRepository.save(Outbox(0, messageId, topic, message.headers["contentType"] as String, State.PENDING, message.payload as ByteArray))
     }
 
 }
