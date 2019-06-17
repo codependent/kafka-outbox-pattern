@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.account
+package com.codependent.outboxpattern.messagerelay
 
 import org.junit.Test
 import org.junit.runner.RunWith
