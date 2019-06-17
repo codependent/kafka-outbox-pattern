@@ -1,6 +1,6 @@
 package com.codependent.outboxpattern.account.service
 
-import com.codependent.outboxpattern.account.TransferEmmitted
+import com.codependent.outboxpattern.account.TransferEmitted
 import com.codependent.outboxpattern.account.dto.Transfer
 import com.codependent.outboxpattern.account.entity.Account
 import com.codependent.outboxpattern.account.exception.AccountDoesntExistException
@@ -34,7 +34,7 @@ class AccountServiceImpl(private val accountRepository: AccountRepository,
                     accountRepository.save(sourceAccount)
                     val transferId = UUID.randomUUID().toString()
                     outboxService.save(transferId, "transfer",
-                            TransferEmmitted(transferId,
+                            TransferEmitted(transferId,
                                     transfer.sourceAccountId,
                                     transfer.destinationAccountId,
                                     transfer.ammount))

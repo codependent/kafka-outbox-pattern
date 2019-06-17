@@ -1,7 +1,7 @@
 {
   "namespace" : "com.codependent.outboxpattern.account",
   "type" : "record",
-  "name" : "TransferEmmitted",
+  "name" : "TransferEmitted",
   "fields" : [
     {"name":"transferId","type":"string"},
     {"name":"sourceAccountId","type":"long"},
