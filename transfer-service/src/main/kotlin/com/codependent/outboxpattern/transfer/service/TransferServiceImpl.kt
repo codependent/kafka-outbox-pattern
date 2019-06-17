@@ -9,6 +9,10 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class TransferServiceImpl(private val transferRepository: TransferRepository) : TransferService {
 
+    override fun getByTransferId(transferId: String): Transfer? {
+        return transferRepository.findByTransferId(transferId)
+    }
+
     override fun getAll(): List<Transfer> {
         return transferRepository.findAll()
     }

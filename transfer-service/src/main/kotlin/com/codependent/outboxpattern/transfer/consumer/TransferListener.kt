@@ -12,11 +12,13 @@ class TransferListener(private val transferService: TransferService) {
 
     @StreamListener(Sink.INPUT)
     fun handle(transfer: TransferEmmitted) {
-        transferService.save(Transfer(0,
-                transfer.getTransferId(),
-                transfer.getSourceAccountId(),
-                transfer.getDestinationAccountId(),
-                transfer.getAmmount()))
+        if (transferService.getByTransferId(transfer.getTransferId()) == null) {
+            transferService.save(Transfer(0,
+                    transfer.getTransferId(),
+                    transfer.getSourceAccountId(),
+                    transfer.getDestinationAccountId(),
+                    transfer.getAmmount()))
+        }
     }
 
 }
