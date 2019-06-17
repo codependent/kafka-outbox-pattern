@@ -2,7 +2,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     id("org.jetbrains.kotlin.plugin.jpa") version "1.3.31"
-    id("org.springframework.boot") version "2.2.0.M3"
+    //id("org.springframework.boot") version "2.2.0.M3"
+    id("org.springframework.boot") version "2.1.4.RELEASE"
     id("io.spring.dependency-management") version "1.0.7.RELEASE"
     id("com.commercehub.gradle.plugin.avro") version "0.17.0"
     kotlin("jvm") version "1.3.31"
@@ -15,13 +16,14 @@ java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 repositories {
     mavenCentral()
-    maven("http://repo.spring.io/libs-release")
-    maven("http://repo.spring.io/libs-milestone")
-    maven("http://repo.spring.io/libs-snapshot")
+    maven("https://repo.spring.io/libs-release")
+    maven("https://repo.spring.io/libs-milestone")
+    maven("https://repo.spring.io/libs-snapshot")
 }
 
 extra["springCloudVersion"] = "Greenwich.SR1"
-extra["springCloudStreamVersion"] = "Horsham.BUILD-SNAPSHOT"
+//extra["springCloudStreamVersion"] = "Horsham.BUILD-SNAPSHOT"
+extra["springCloudStreamVersion"] = "Germantown.RELEASE"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
