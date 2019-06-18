@@ -17,12 +17,10 @@ const val DEDUP_STORE = "dedup-store"
 @EnableBinding(KafkaStreamsProcessor::class)
 class FraudKafkaStreamsConfiguration(private val fraudDetectionService: FraudDetectionService) {
 
-    @KafkaStreamsStateStore(name = DEDUP_STORE, type = KafkaStreamsStateStoreProperties.StoreType.KEYVALUE,
-            valueSerde = "io.confluent.kafka.streams.serdes.avro.SpecificAvroSerde")
+    @KafkaStreamsStateStore(name = DEDUP_STORE, type = KafkaStreamsStateStoreProperties.StoreType.KEYVALUE)
     @StreamListener
     @SendTo("output")
     fun process(@Input("input") input: KStream<String, TransferEmitted>): KStream<String, TransferEmitted> {
-        //val serdeConfig = mapOf(AbstractKafkaAvroSerDeConfig.SCHEMA_REGISTRY_URL_CONFIG to "http://localhost:8081")
         return input
                 .transform(TransformerSupplier { DeduplicationTransformer() }, DEDUP_STORE)
                 .filter { _, value -> fraudDetectionService.isFraudulent(value) }

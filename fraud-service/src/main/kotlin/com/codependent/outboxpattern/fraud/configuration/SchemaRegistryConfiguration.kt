@@ -38,9 +38,4 @@ class SchemaRegistryConfiguration {
         return client
     }
 
-    @Bean
-    fun messageConverter(): MessageConverter {
-        return AvroSchemaMessageConverter(MimeType.valueOf("avro/bytes"))
-    }
-
 }

@@ -10,19 +10,19 @@ import org.apache.kafka.streams.state.KeyValueStore
 @Suppress("UNCHECKED_CAST")
 class DeduplicationTransformer : Transformer<String, TransferEmitted, KeyValue<String, TransferEmitted>> {
 
-    private lateinit var dedupStore: KeyValueStore<String, TransferEmitted>
+    private lateinit var dedupStore: KeyValueStore<String, String>
     private lateinit var context: ProcessorContext
 
     override fun init(context: ProcessorContext) {
         this.context = context
-        dedupStore = context.getStateStore(DEDUP_STORE) as KeyValueStore<String, TransferEmitted>
+        dedupStore = context.getStateStore(DEDUP_STORE) as KeyValueStore<String, String>
     }
 
     override fun transform(key: String, value: TransferEmitted): KeyValue<String, TransferEmitted>? {
         return if (isDuplicate(key)) {
             null
         } else {
-            dedupStore.put(key, value)
+            dedupStore.put(key, key)
             KeyValue(key, value)
         }
     }
