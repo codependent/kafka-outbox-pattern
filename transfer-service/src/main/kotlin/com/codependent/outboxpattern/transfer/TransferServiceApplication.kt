@@ -1,11 +1,11 @@
-package com.codependent.outboxpattern.fraud
+package com.codependent.outboxpattern.transfer
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class FraudServiceApplication
+class TransferServiceApplication
 
 fun main(args: Array<String>) {
-    runApplication<FraudServiceApplication>(*args)
+    runApplication<TransferServiceApplication>(*args)
 }

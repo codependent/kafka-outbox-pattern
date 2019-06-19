@@ -14,4 +14,4 @@ pluginManagement {
         }
     }
 }
-rootProject.name = "fraud-service"
+rootProject.name = "operations-service"

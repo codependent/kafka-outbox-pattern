@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.fraud
+package com.codependent.outboxpattern.transfer
 
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -9,8 +9,8 @@ import org.springframework.scheduling.annotation.EnableScheduling
 
 @EnableBinding(Sink::class)
 @SpringBootApplication
-class TransferServiceApplication
+class OperationsServiceApplication
 
 fun main(args: Array<String>) {
-    runApplication<TransferServiceApplication>(*args)
+    runApplication<OperationsServiceApplication>(*args)
 }

@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.fraud.service
+package com.codependent.outboxpattern.transfer.service
 
 import com.codependent.outboxpattern.account.TransferEmitted
 import org.springframework.stereotype.Service

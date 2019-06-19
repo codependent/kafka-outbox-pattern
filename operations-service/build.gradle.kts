@@ -10,7 +10,7 @@ plugins {
     kotlin("plugin.spring") version "1.3.31"
 }
 
-group = "com.codependent.outboxpattern.transfer"
+group = "com.codependent.outboxpattern.operations"
 version = "1.0.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
@@ -19,22 +19,18 @@ repositories {
     maven("https://repo.spring.io/libs-release")
     maven("https://repo.spring.io/libs-milestone")
     maven("https://repo.spring.io/libs-snapshot")
-    maven("https://packages.confluent.io/maven/")
 }
 
 extra["springCloudVersion"] = "Greenwich.SR1"
 //extra["springCloudStreamVersion"] = "Horsham.BUILD-SNAPSHOT"
 extra["springCloudStreamVersion"] = "Germantown.RELEASE"
-extra["confluentVersion"] = "5.2.1"
 
 dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.springframework.cloud:spring-cloud-stream")
     implementation("org.springframework.cloud:spring-cloud-stream-schema")
-    implementation("org.springframework.cloud:spring-cloud-stream-binder-kafka-streams")
-    implementation("io.confluent:kafka-streams-avro-serde:${property("confluentVersion")}")
-    implementation("io.confluent:kafka-avro-serializer:${property("confluentVersion")}")
+    implementation("org.springframework.cloud:spring-cloud-starter-stream-kafka")
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")

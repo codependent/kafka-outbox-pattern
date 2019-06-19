@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.fraud.stream
+package com.codependent.outboxpattern.transfer.stream
 
 import com.codependent.outboxpattern.account.TransferEmitted
 import org.apache.kafka.streams.KeyValue

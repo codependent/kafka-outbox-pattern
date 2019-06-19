@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: transfer-service
+  cloud:
+    stream:
+      kafka:
+        bindings:
+          output:
+            producer:
+              configuration:
+                key:
+                  serializer: org.apache.kafka.common.serialization.StringSerializer
+      bindings:
+        input:
+          destination: transfer
+          contentType: application/*+avro
+      schema-registry-client:
+        endpoint: http://localhost:8081
+      schema:
+        avro:
+          subjectNamingStrategy: org.springframework.cloud.stream.schema.avro.QualifiedSubjectNamingStrategy
+
+server:
+  port: 8084

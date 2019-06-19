@@ -3,22 +3,28 @@ spring:
     name: transfer-service
   cloud:
     stream:
+      schema-registry-client:
+        endpoint: http://localhost:8081
       kafka:
-        bindings:
-          output:
-            producer:
-              configuration:
+        streams:
+          binder:
+            configuration:
+              application:
+                id: fraud-service
+              default:
                 key:
-                  serializer: org.apache.kafka.common.serialization.StringSerializer
+                  serde: org.apache.kafka.common.serialization.Serdes$StringSerde
+              schema:
+                registry:
+                  url: http://localhost:8081
       bindings:
         input:
           destination: transfer
           contentType: application/*+avro
-      schema-registry-client:
-        endpoint: http://localhost:8081
-      schema:
-        avro:
-          subjectNamingStrategy: org.springframework.cloud.stream.schema.avro.QualifiedSubjectNamingStrategy
 
 server:
-  port: 8084
+  port: 8086
+
+logging:
+  level:
+    org.springframework.cloud.stream: debug
