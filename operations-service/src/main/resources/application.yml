@@ -1,6 +1,6 @@
 spring:
   application:
-    name: transfer-service
+    name: operations-service
   cloud:
     stream:
       kafka:

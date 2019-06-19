@@ -1,6 +1,6 @@
-package com.codependent.outboxpattern.transfer.repository
+package com.codependent.outboxpattern.operations.repository
 
-import com.codependent.outboxpattern.transfer.entity.Transfer
+import com.codependent.outboxpattern.operations.entity.Transfer
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
 

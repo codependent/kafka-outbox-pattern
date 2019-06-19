@@ -1,7 +1,7 @@
-package com.codependent.outboxpattern.transfer.web
+package com.codependent.outboxpattern.operations.web
 
-import com.codependent.outboxpattern.transfer.entity.Transfer
-import com.codependent.outboxpattern.transfer.service.TransferService
+import com.codependent.outboxpattern.operations.entity.Transfer
+import com.codependent.outboxpattern.operations.service.TransferService
 import org.springframework.web.bind.annotation.*
 
 @RestController

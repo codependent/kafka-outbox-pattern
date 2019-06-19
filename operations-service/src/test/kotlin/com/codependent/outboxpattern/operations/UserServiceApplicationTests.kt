@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.transfer
+package com.codependent.outboxpattern.operations
 
 import org.junit.Test
 import org.junit.runner.RunWith

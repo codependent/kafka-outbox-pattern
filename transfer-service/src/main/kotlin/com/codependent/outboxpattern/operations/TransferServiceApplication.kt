@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.transfer
+package com.codependent.outboxpattern.operations
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication

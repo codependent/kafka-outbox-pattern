@@ -16,6 +16,14 @@ import java.util.*
 class AccountServiceImpl(private val accountRepository: AccountRepository,
                          private val outboxService: OutboxService) : AccountService {
 
+    override fun receiveTransfer(accountId: Long, ammount: Float) {
+        val destinationAccount = accountRepository.findById(accountId)
+        destinationAccount.ifPresent {
+            it.funds += ammount
+            accountRepository.save(it)
+        }
+    }
+
     override fun getAll(): List<Account> {
         return accountRepository.findAll()
     }

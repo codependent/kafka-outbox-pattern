@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.codependent.outboxpattern.transfer.configuration
+package com.codependent.outboxpattern.operations.configuration
 
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration

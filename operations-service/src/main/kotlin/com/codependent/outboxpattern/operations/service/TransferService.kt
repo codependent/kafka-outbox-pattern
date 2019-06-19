@@ -1,6 +1,6 @@
-package com.codependent.outboxpattern.transfer.service
+package com.codependent.outboxpattern.operations.service
 
-import com.codependent.outboxpattern.transfer.entity.Transfer
+import com.codependent.outboxpattern.operations.entity.Transfer
 
 interface TransferService {
 

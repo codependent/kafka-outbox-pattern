@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.transfer.stream
+package com.codependent.outboxpattern.operations.stream
 
 import com.codependent.outboxpattern.account.TransferEmitted
 import org.apache.kafka.streams.KeyValue

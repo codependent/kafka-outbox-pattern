@@ -21,6 +21,12 @@ spring:
         input:
           destination: transfer
           contentType: application/*+avro
+        outputOk:
+          destination: account
+          contentType: application/*+avro
+        outputKo:
+          destination: fraudulent-transfer
+          contentType: application/*+avro
 
 server:
   port: 8086

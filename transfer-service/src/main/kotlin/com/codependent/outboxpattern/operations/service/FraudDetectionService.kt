@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.transfer.service
+package com.codependent.outboxpattern.operations.service
 
 import com.codependent.outboxpattern.account.TransferEmitted
 

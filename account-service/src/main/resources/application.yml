@@ -11,8 +11,9 @@ spring:
                 key:
                   serializer: org.apache.kafka.common.serialization.StringSerializer
       bindings:
-        output:
-          destination: transfer
+        input:
+          group: ${spring.application.name}
+          destination: account
           contentType: application/*+avro
       schema-registry-client:
         endpoint: http://localhost:8081

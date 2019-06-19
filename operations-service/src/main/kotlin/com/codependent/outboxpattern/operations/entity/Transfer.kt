@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.transfer.entity
+package com.codependent.outboxpattern.operations.entity
 
 import javax.persistence.*
 
