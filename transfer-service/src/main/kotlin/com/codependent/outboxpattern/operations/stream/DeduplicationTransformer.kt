@@ -5,11 +5,13 @@ import org.apache.kafka.streams.KeyValue
 import org.apache.kafka.streams.kstream.Transformer
 import org.apache.kafka.streams.processor.ProcessorContext
 import org.apache.kafka.streams.state.KeyValueStore
+import org.slf4j.LoggerFactory
 
 
 @Suppress("UNCHECKED_CAST")
 class DeduplicationTransformer : Transformer<String, TransferEmitted, KeyValue<String, TransferEmitted>> {
 
+    private val logger = LoggerFactory.getLogger(javaClass)
     private lateinit var dedupStore: KeyValueStore<String, String>
     private lateinit var context: ProcessorContext
 
@@ -20,8 +22,10 @@ class DeduplicationTransformer : Transformer<String, TransferEmitted, KeyValue<S
 
     override fun transform(key: String, value: TransferEmitted): KeyValue<String, TransferEmitted>? {
         return if (isDuplicate(key)) {
+            logger.warn("****** Detected duplicated transfer {}", key)
             null
         } else {
+            logger.warn("****** Registering transfer {}", key)
             dedupStore.put(key, key)
             KeyValue(key, value)
         }
