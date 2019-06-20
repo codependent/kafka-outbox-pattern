@@ -9,4 +9,5 @@ interface AccountService {
     fun getAll(): List<Account>
     fun transfer(transfer: Transfer)
     fun receiveTransfer(accountId: Long, ammount: Float)
+    fun cancelTransfer(accountId: Long, ammount: Float)
 }

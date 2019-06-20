@@ -15,6 +15,10 @@ spring:
           group: ${spring.application.name}
           destination: account
           contentType: application/*+avro
+        inputFraudulent:
+          group: ${spring.application.name}
+          destination: fraudulent-transfer
+          contentType: application/*+avro
       schema-registry-client:
         endpoint: http://localhost:8081
       schema:

@@ -33,4 +33,4 @@ server:
 
 logging:
   level:
-    org.springframework.cloud.stream: debug
+    org.springframework.kafka.config: debug

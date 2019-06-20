@@ -9,6 +9,7 @@ import com.codependent.outboxpattern.account.repository.AccountRepository
 import com.codependent.outboxpattern.outbox.service.OutboxService
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import java.math.BigDecimal
 import java.util.*
 
 @Transactional
@@ -19,7 +20,19 @@ class AccountServiceImpl(private val accountRepository: AccountRepository,
     override fun receiveTransfer(accountId: Long, ammount: Float) {
         val destinationAccount = accountRepository.findById(accountId)
         destinationAccount.ifPresent {
-            it.funds += ammount
+            val funds = BigDecimal(it.funds.toString())
+            val transferAmmount = BigDecimal(ammount.toString())
+            it.funds = funds.add(transferAmmount).toFloat()
+            accountRepository.save(it)
+        }
+    }
+
+    override fun cancelTransfer(accountId: Long, ammount: Float) {
+        val sourceAccount = accountRepository.findById(accountId)
+        sourceAccount.ifPresent {
+            val funds = BigDecimal(it.funds.toString())
+            val transferAmmount = BigDecimal(ammount.toString())
+            it.funds = funds.add(transferAmmount).toFloat()
             accountRepository.save(it)
         }
     }
@@ -38,7 +51,9 @@ class AccountServiceImpl(private val accountRepository: AccountRepository,
             true -> {
                 val sourceAccount = account.get()
                 if (sourceAccount.funds >= transfer.ammount) {
-                    sourceAccount.funds -= transfer.ammount
+                    val funds = BigDecimal(sourceAccount.funds.toString())
+                    val transferAmmount = BigDecimal(transfer.ammount.toString())
+                    sourceAccount.funds = funds.subtract(transferAmmount).toFloat()
                     accountRepository.save(sourceAccount)
                     val transferId = UUID.randomUUID().toString()
                     outboxService.save(transferId, "transfer",

@@ -1,12 +1,12 @@
 package com.codependent.outboxpattern
 
+import com.codependent.outboxpattern.account.consumer.Sinks
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.cloud.stream.annotation.EnableBinding
-import org.springframework.cloud.stream.messaging.Sink
 import org.springframework.scheduling.annotation.EnableScheduling
 
-@EnableBinding(Sink::class)
+@EnableBinding(Sinks::class)
 @EnableScheduling
 @SpringBootApplication
 class AccountServiceApplication
