@@ -1,8 +1,8 @@
 package com.codependent.outboxpattern.account.web
 
-import com.codependent.outboxpattern.account.entity.Account
-import com.codependent.outboxpattern.account.service.AccountService
+import com.codependent.outboxpattern.account.dto.Account
 import com.codependent.outboxpattern.account.dto.Transfer
+import com.codependent.outboxpattern.account.service.AccountService
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*
 class AccountRestController(private val accountService: AccountService) {
 
     @PostMapping
-    fun save(@RequestBody account: Account) {
-        accountService.save(account)
+    fun save(@RequestBody accountEntity: Account) {
+        accountService.save(accountEntity)
     }
 
     @PutMapping("/transfers")

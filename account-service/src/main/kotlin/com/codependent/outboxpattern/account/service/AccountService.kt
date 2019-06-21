@@ -1,6 +1,8 @@
 package com.codependent.outboxpattern.account.service
 
-import com.codependent.outboxpattern.account.entity.Account
+import com.codependent.outboxpattern.account.TransferApproved
+import com.codependent.outboxpattern.account.TransferEmitted
+import com.codependent.outboxpattern.account.dto.Account
 import com.codependent.outboxpattern.account.dto.Transfer
 
 interface AccountService {
@@ -8,6 +10,6 @@ interface AccountService {
     fun save(account: Account)
     fun getAll(): List<Account>
     fun transfer(transfer: Transfer)
-    fun receiveTransfer(accountId: Long, ammount: Float)
-    fun cancelTransfer(accountId: Long, ammount: Float)
+    fun receiveTransfer(transfer: TransferApproved)
+    fun cancelTransfer(transfer: TransferEmitted)
 }

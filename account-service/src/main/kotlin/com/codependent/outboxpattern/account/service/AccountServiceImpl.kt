@@ -1,10 +1,15 @@
 package com.codependent.outboxpattern.account.service
 
+import com.codependent.outboxpattern.account.TransferApproved
 import com.codependent.outboxpattern.account.TransferEmitted
+import com.codependent.outboxpattern.account.dto.Account
+import com.codependent.outboxpattern.account.dto.MovementType
 import com.codependent.outboxpattern.account.dto.Transfer
-import com.codependent.outboxpattern.account.entity.Account
+import com.codependent.outboxpattern.account.entity.AccountEntity
+import com.codependent.outboxpattern.account.entity.MovementEntity
 import com.codependent.outboxpattern.account.exception.AccountDoesntExistException
 import com.codependent.outboxpattern.account.exception.FundsNotAvailableException
+import com.codependent.outboxpattern.account.mapper.ObjectMapper
 import com.codependent.outboxpattern.account.repository.AccountRepository
 import com.codependent.outboxpattern.outbox.service.OutboxService
 import org.springframework.stereotype.Service
@@ -15,34 +20,43 @@ import java.util.*
 @Transactional
 @Service
 class AccountServiceImpl(private val accountRepository: AccountRepository,
-                         private val outboxService: OutboxService) : AccountService {
+                         private val outboxService: OutboxService,
+                         private val mapper: ObjectMapper) : AccountService {
 
-    override fun receiveTransfer(accountId: Long, ammount: Float) {
-        val destinationAccount = accountRepository.findById(accountId)
+    //TODO Deduplicate
+    override fun receiveTransfer(transfer: TransferApproved) {
+        val destinationAccount = accountRepository.findById(transfer.getDestinationAccountId())
         destinationAccount.ifPresent {
             val funds = BigDecimal(it.funds.toString())
-            val transferAmmount = BigDecimal(ammount.toString())
+            val transferAmmount = BigDecimal(transfer.getAmmount().toString())
             it.funds = funds.add(transferAmmount).toFloat()
+
+            val movementEntity = MovementEntity(0, transfer.getTransferId(), MovementType.PAYMENT,
+                    it, transfer.getSourceAccountId(), transfer.getAmmount(), Date())
+            it.movements.add(movementEntity)
+
             accountRepository.save(it)
         }
     }
 
-    override fun cancelTransfer(accountId: Long, ammount: Float) {
-        val sourceAccount = accountRepository.findById(accountId)
-        sourceAccount.ifPresent {
-            val funds = BigDecimal(it.funds.toString())
-            val transferAmmount = BigDecimal(ammount.toString())
-            it.funds = funds.add(transferAmmount).toFloat()
-            accountRepository.save(it)
+    //TODO Deduplicate
+    override fun cancelTransfer(transfer: TransferEmitted) {
+        val sourceAccount = accountRepository.findById(transfer.getSourceAccountId())
+        sourceAccount.ifPresent { sAccount ->
+            val funds = BigDecimal(sAccount.funds.toString())
+            val transferAmmount = BigDecimal(transfer.getAmmount().toString())
+            sAccount.funds = funds.add(transferAmmount).toFloat()
+            sAccount.movements.removeIf { it.transactionId == transfer.getTransferId() }
+            accountRepository.save(sAccount)
         }
     }
 
     override fun getAll(): List<Account> {
-        return accountRepository.findAll()
+        return mapper.map(accountRepository.findAll(), Account::class.java)
     }
 
     override fun save(account: Account) {
-        accountRepository.save(account)
+        accountRepository.save(mapper.map(account, AccountEntity::class.java))
     }
 
     override fun transfer(transfer: Transfer) {
@@ -54,10 +68,15 @@ class AccountServiceImpl(private val accountRepository: AccountRepository,
                     val funds = BigDecimal(sourceAccount.funds.toString())
                     val transferAmmount = BigDecimal(transfer.ammount.toString())
                     sourceAccount.funds = funds.subtract(transferAmmount).toFloat()
+
+                    val movement = MovementEntity(0, UUID.randomUUID().toString(),
+                            MovementType.CHARGE, sourceAccount, transfer.destinationAccountId, transfer.ammount, Date())
+                    sourceAccount.movements.add(movement)
+
                     accountRepository.save(sourceAccount)
-                    val transferId = UUID.randomUUID().toString()
-                    outboxService.save(transferId, "transfer",
-                            TransferEmitted(transferId,
+
+                    outboxService.save(movement.transactionId, "transfer",
+                            TransferEmitted(movement.transactionId,
                                     transfer.sourceAccountId,
                                     transfer.destinationAccountId,
                                     transfer.ammount))
