@@ -11,7 +11,9 @@ import com.codependent.outboxpattern.account.exception.AccountDoesntExistExcepti
 import com.codependent.outboxpattern.account.exception.FundsNotAvailableException
 import com.codependent.outboxpattern.account.mapper.ObjectMapper
 import com.codependent.outboxpattern.account.repository.AccountRepository
+import com.codependent.outboxpattern.account.repository.MovementRepository
 import com.codependent.outboxpattern.outbox.service.OutboxService
+import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
@@ -20,34 +22,45 @@ import java.util.*
 @Transactional
 @Service
 class AccountServiceImpl(private val accountRepository: AccountRepository,
+                         private val movementRepository: MovementRepository,
                          private val outboxService: OutboxService,
                          private val mapper: ObjectMapper) : AccountService {
 
-    //TODO Deduplicate
+    private val logger = LoggerFactory.getLogger(javaClass)
+
     override fun receiveTransfer(transfer: TransferApproved) {
-        val destinationAccount = accountRepository.findById(transfer.getDestinationAccountId())
-        destinationAccount.ifPresent {
-            val funds = BigDecimal(it.funds.toString())
-            val transferAmmount = BigDecimal(transfer.getAmmount().toString())
-            it.funds = funds.add(transferAmmount).toFloat()
 
-            val movementEntity = MovementEntity(0, transfer.getTransferId(), MovementType.PAYMENT,
-                    it, transfer.getSourceAccountId(), transfer.getAmmount(), Date())
-            it.movements.add(movementEntity)
+        if (movementRepository.findByTransactionIdTypeTypeAccountEntityId(transfer.getTransferId(), MovementType.PAYMENT, transfer.getDestinationAccountId()).isEmpty()) {
+            val destinationAccount = accountRepository.findById(transfer.getDestinationAccountId())
+            destinationAccount.ifPresent {
+                val funds = BigDecimal(it.funds.toString())
+                val transferAmmount = BigDecimal(transfer.getAmmount().toString())
+                it.funds = funds.add(transferAmmount).toFloat()
 
-            accountRepository.save(it)
+                val movementEntity = MovementEntity(0, transfer.getTransferId(), MovementType.PAYMENT,
+                        it, transfer.getSourceAccountId(), transfer.getAmmount(), Date())
+                it.movements.add(movementEntity)
+
+                accountRepository.save(it)
+            }
+        } else {
+            logger.warn("Ignoring duplicated received transfer {}", transfer)
         }
     }
 
-    //TODO Deduplicate
     override fun cancelTransfer(transfer: TransferEmitted) {
-        val sourceAccount = accountRepository.findById(transfer.getSourceAccountId())
-        sourceAccount.ifPresent { sAccount ->
-            val funds = BigDecimal(sAccount.funds.toString())
-            val transferAmmount = BigDecimal(transfer.getAmmount().toString())
-            sAccount.funds = funds.add(transferAmmount).toFloat()
-            sAccount.movements.removeIf { it.transactionId == transfer.getTransferId() }
-            accountRepository.save(sAccount)
+
+        if (movementRepository.findByTransactionIdTypeTypeAccountEntityId(transfer.getTransferId(), MovementType.CHARGE, transfer.getSourceAccountId()).isEmpty()) {
+            val sourceAccount = accountRepository.findById(transfer.getSourceAccountId())
+            sourceAccount.ifPresent { sAccount ->
+                val funds = BigDecimal(sAccount.funds.toString())
+                val transferAmmount = BigDecimal(transfer.getAmmount().toString())
+                sAccount.funds = funds.add(transferAmmount).toFloat()
+                sAccount.movements.removeIf { it.transactionId == transfer.getTransferId() }
+                accountRepository.save(sAccount)
+            }
+        } else {
+            logger.warn("Ignoring duplicated transfer cancelation {}", transfer)
         }
     }
 

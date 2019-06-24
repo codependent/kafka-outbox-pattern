@@ -1,6 +1,5 @@
 package com.codependent.outboxpattern.account.entity
 
-import com.codependent.outboxpattern.account.dto.Movement
 import javax.persistence.*
 
 @Entity
