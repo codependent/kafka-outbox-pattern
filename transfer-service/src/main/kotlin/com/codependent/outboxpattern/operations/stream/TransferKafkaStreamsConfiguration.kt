@@ -17,6 +17,7 @@ import org.springframework.messaging.handler.annotation.SendTo
 
 const val DEDUP_STORE = "dedup-store"
 
+@Suppress("UNCHECKED_CAST")
 @EnableBinding(TransferKafkaStreamsProcessor::class)
 class FraudKafkaStreamsConfiguration(private val fraudDetectionService: FraudDetectionService) {
 

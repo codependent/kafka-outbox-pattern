@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface MovementRepository : JpaRepository<MovementEntity, Int> {
 
-    fun findByTransactionIdTypeTypeAccountEntityId(transactionId: String, type: MovementType, accountEntityId: Long): List<MovementEntity>
+    fun findByTransactionIdAndTypeAndAccountEntityId(transactionId: String, type: MovementType, accountEntityId: Long): List<MovementEntity>
 
 }

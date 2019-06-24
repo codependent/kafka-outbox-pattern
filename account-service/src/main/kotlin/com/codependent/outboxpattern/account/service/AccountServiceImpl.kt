@@ -30,7 +30,7 @@ class AccountServiceImpl(private val accountRepository: AccountRepository,
 
     override fun receiveTransfer(transfer: TransferApproved) {
 
-        if (movementRepository.findByTransactionIdTypeTypeAccountEntityId(transfer.getTransferId(), MovementType.PAYMENT, transfer.getDestinationAccountId()).isEmpty()) {
+        if (movementRepository.findByTransactionIdAndTypeAndAccountEntityId(transfer.getTransferId(), MovementType.PAYMENT, transfer.getDestinationAccountId()).isEmpty()) {
             val destinationAccount = accountRepository.findById(transfer.getDestinationAccountId())
             destinationAccount.ifPresent {
                 val funds = BigDecimal(it.funds.toString())
@@ -50,7 +50,7 @@ class AccountServiceImpl(private val accountRepository: AccountRepository,
 
     override fun cancelTransfer(transfer: TransferEmitted) {
 
-        if (movementRepository.findByTransactionIdTypeTypeAccountEntityId(transfer.getTransferId(), MovementType.CHARGE, transfer.getSourceAccountId()).isEmpty()) {
+        if (movementRepository.findByTransactionIdAndTypeAndAccountEntityId(transfer.getTransferId(), MovementType.CHARGE, transfer.getSourceAccountId()).isEmpty()) {
             val sourceAccount = accountRepository.findById(transfer.getSourceAccountId())
             sourceAccount.ifPresent { sAccount ->
                 val funds = BigDecimal(sAccount.funds.toString())
