@@ -10,6 +10,8 @@ spring:
               configuration:
                 key:
                   serializer: org.apache.kafka.common.serialization.StringSerializer
+                enable:
+                  idempotence: true
       bindings:
         output:
           destination: transfer

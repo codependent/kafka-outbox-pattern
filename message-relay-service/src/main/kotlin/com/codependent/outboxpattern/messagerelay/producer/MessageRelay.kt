@@ -1,4 +1,4 @@
-package com.codependent.outboxpattern.messagerelay.timer
+package com.codependent.outboxpattern.messagerelay.producer
 
 import com.codependent.outboxpattern.messagerelay.service.OutboxService
 import org.springframework.cloud.stream.binding.BinderAwareChannelResolver
