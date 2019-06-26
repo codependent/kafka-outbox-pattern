@@ -10,13 +10,15 @@ spring:
           binder:
             configuration:
               application:
-                id: fraud-service
+                id: transfer-service
               default:
                 key:
                   serde: org.apache.kafka.common.serialization.Serdes$StringSerde
               schema:
                 registry:
                   url: http://localhost:8081
+              processing:
+                guarantee: exactly_once
       bindings:
         input:
           destination: transfer

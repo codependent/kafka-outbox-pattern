@@ -4,14 +4,16 @@ spring:
   cloud:
     stream:
       kafka:
-        bindings:
-          output:
+        binder:
+          transaction:
+            transaction-id-prefix: message-relay-tx-
             producer:
               configuration:
+                retries: 1
+                acks: all
                 key:
                   serializer: org.apache.kafka.common.serialization.StringSerializer
-                enable:
-                  idempotence: true
+
       bindings:
         output:
           destination: transfer

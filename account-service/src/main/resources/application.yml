@@ -4,6 +4,9 @@ spring:
   cloud:
     stream:
       kafka:
+        binder:
+          configuration:
+            isolation.level: read_committed
         bindings:
           output:
             producer:

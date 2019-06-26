@@ -3,12 +3,31 @@ Implementation of the outbox pattern using Spring Cloud Stream Kafka
 
 ## Running the app:
 
-Start the Confluent Platform:
+Download the Confluent Platform:
 
 ```
 git clone https://github.com/confluentinc/cp-docker-images
+```
+
+Configure transactional support in development mode (1 broker) in `examples/cp-all-in-one/docker-compose.yml`:
+
+* Necessary for transactional producers:
+
+```
+KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+```
+
+* Necessary for exactly_once KStreams:
+
+```
+KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+```
+
+Start the Confluent Platform:
+
+```
 cd cp-docker-images
-git checkout 5.2.1-post
+git checkout 5.2.2-post
 cd examples/cp-all-in-one/
 docker-compose up -d --build
 ```
@@ -29,14 +48,19 @@ Go to the root of the sample project and do:
 
 Create two accounts:
 
-`curl -X POST http://localhost:8080/accounts -H "content-type: application/json" -d '{"ownerId": "1234D", "ownerName": "John Doe", "funds": 2000.00}'`
+```
+curl -X POST http://localhost:8080/accounts -H "content-type: application/json" -d '{"ownerId": "1234D", "ownerName": "John Doe", "funds": 2000.00}'
+```
 
-`curl -X POST http://localhost:8080/accounts -H "content-type: application/json" -d '{"ownerId": "2225X", "ownerName": "Anne Mary", "funds": 2000.00}'`
-
+```
+curl -X POST http://localhost:8080/accounts -H "content-type: application/json" -d '{"ownerId": "2225X", "ownerName": "Anne Mary", "funds": 2000.00}'
+```
 
 Create some transfers between the existing accounts:
 
-`curl -X PUT http://localhost:8080/accounts/transfers -H "content-type: application/json" -d '{"sourceAccountId": 1, "destinationAccountId": 2, "ammount": 100.00}'`
+```
+curl -X PUT http://localhost:8080/accounts/transfers -H "content-type: application/json" -d '{"sourceAccountId": 1, "destinationAccountId": 2, "ammount": 100.00}'
+```
 
 Observe the state of:
  
