@@ -8,12 +8,14 @@ import org.springframework.messaging.MessageHeaders
 import org.springframework.messaging.support.MessageBuilder
 import org.springframework.scheduling.annotation.Scheduled
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class MessageRelay(private val outboxService: OutboxService,
                    private val resolver: BinderAwareChannelResolver,
                    private val source: Source) {
 
+    @Transactional
     @Scheduled(fixedDelay = 10000)
     fun checkOutbox() {
         val pending = outboxService.getPending()
